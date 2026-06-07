@@ -1,8 +1,18 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Navbar from "../components/Navbar";
 import api from "../services/api";
 
 function Dashboard() {
+    const navigate = useNavigate();
 
+    useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+        navigate("/");
+    }
+    }, []);
     const [stats, setStats] = useState(null);
 
     useEffect(() => {
@@ -43,6 +53,8 @@ function Dashboard() {
 
     return (
         <div>
+            <Navbar />
+            <div className="p-6">
 
             <h1>PlacementOS Dashboard</h1>
 
@@ -61,7 +73,8 @@ function Dashboard() {
             <h2>
                 Total Tracked: {stats.totalTracked}
             </h2>
-
+            
+            </div>
         </div>
     );
 }

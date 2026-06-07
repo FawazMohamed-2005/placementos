@@ -1,0 +1,136 @@
+.dash-hero {
+    margin: 36px 0 28px;
+}
+
+.dash-hero h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 6px;
+}
+
+.dash-hero p {
+    color: #6b7280;
+    font-size: 0.95rem;
+}
+
+/* Section */
+.dash-section {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 24px 28px;
+    margin-bottom: 24px;
+}
+
+.dash-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.dash-section-header h2 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #111827;
+}
+
+.dash-link {
+    background: none;
+    border: none;
+    color: #4f46e5;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.2s;
+    padding: 0;
+}
+
+.dash-link:hover {
+    color: #4338ca;
+}
+
+/* Reuse stats grid from Problems.css */
+/* These classes are shared across pages */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.stat-card {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 16px 18px;
+    text-align: center;
+}
+
+.stat-card p {
+    font-size: 0.78rem;
+    color: #9ca3af;
+    font-weight: 500;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.stat-card h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+
+/* Stat colors */
+.total    { color: #111827; }
+.solved   { color: #10b981; }
+.attempted{ color: #f59e0b; }
+.revision { color: #ef4444; }
+.remain   { color: #6b7280; }
+
+/* Progress bar */
+.progress-section {
+    margin-top: 4px;
+}
+
+.progress-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.83rem;
+    color: #6b7280;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.progress-bar {
+    height: 8px;
+    background: #f3f4f6;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4f46e5, #818cf8);
+    border-radius: 999px;
+    transition: width 0.5s ease;
+}
+
+/* Loading */
+.loading-text {
+    text-align: center;
+    color: #9ca3af;
+    margin-top: 60px;
+    font-size: 0.95rem;
+}
+
+@media (max-width: 640px) {
+    .stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .dash-section {
+        padding: 18px;
+    }
+}

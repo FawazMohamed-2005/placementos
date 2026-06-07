@@ -8,7 +8,7 @@ const problemRoutes = require("./routes/problemRoutes");
 dotenv.config();
 const progressRoutes = require("./routes/progressRoutes");
 connectDB();
-
+const applicationRoutes = require("./routes/applicationRoutes");
 const app = express();
 
 app.use(cors());
@@ -17,6 +17,7 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 const noteRoutes = require("./routes/noteRoutes");
 app.use("/api/notes", noteRoutes);
+app.use("/api/applications", applicationRoutes);
 app.use("/api/problems", problemRoutes);
 app.use("/api/progress", progressRoutes);
 app.get("/", (req, res) => {

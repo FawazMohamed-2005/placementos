@@ -7,6 +7,9 @@ import Problems from "./pages/Problems";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import ProblemDetail from "./pages/ProblemDetail";
+import Jobs from "./pages/Jobs";
+import JobForm from "./pages/JobForm";
+
 function App() {
   return (
     <BrowserRouter>
@@ -20,6 +23,9 @@ function App() {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/revision" element={<Revision />} />
         <Route path="/problems/:id" element={<ProblemDetail />} />
+        <Route path="/jobs" element={<Jobs />} />
+        <Route path="/jobs/new" element={<JobForm />} />
+        <Route path="/jobs/:id/edit" element={<JobForm />} />
       </Routes>
     </BrowserRouter>
   );

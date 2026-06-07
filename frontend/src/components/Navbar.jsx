@@ -1,5 +1,4 @@
 import { useNavigate, useLocation } from "react-router-dom";
-import { Link, NavLink } from "react-router-dom";
 import "./Navbar.css";
 
 const Navbar = () => {
@@ -10,6 +9,8 @@ const Navbar = () => {
     localStorage.removeItem("token");
     navigate("/");
   };
+
+  const isActive = (path) => location.pathname === path;
 
   return (
     <nav className="navbar">
@@ -22,25 +23,31 @@ const Navbar = () => {
 
       <div className="nav-links">
         <button
-          className={`nav-btn ${
-            location.pathname === "/dashboard"
-              ? "active"
-              : ""
-          }`}
+          className={`nav-btn ${isActive("/dashboard") ? "active" : ""}`}
           onClick={() => navigate("/dashboard")}
         >
           Dashboard
         </button>
 
         <button
-          className={`nav-btn ${
-            location.pathname === "/problems"
-              ? "active"
-              : ""
-          }`}
+          className={`nav-btn ${isActive("/problems") ? "active" : ""}`}
           onClick={() => navigate("/problems")}
         >
           Problems
+        </button>
+
+        <button
+          className={`nav-btn ${isActive("/jobs") ? "active" : ""}`}
+          onClick={() => navigate("/jobs")}
+        >
+          Jobs
+        </button>
+
+        <button
+          className={`nav-btn ${isActive("/revision") ? "active" : ""}`}
+          onClick={() => navigate("/revision")}
+        >
+          Revision
         </button>
 
         <button
@@ -49,7 +56,6 @@ const Navbar = () => {
         >
           Logout
         </button>
-        <NavLink to="/revision">Revision</NavLink>
       </div>
     </nav>
   );

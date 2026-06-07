@@ -402,3 +402,137 @@ body {
     grid-template-columns: 1fr;
   }
 }
+/* ── Status Badge Colors ──────────────────────────── */
+
+/* Already have tag-solved, tag-ns — extend below */
+
+.tag-attempted {
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fcd34d;
+}
+
+.tag-revision {
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fca5a5;
+}
+
+/* Ensure Not Started stays gray */
+.tag-ns {
+  background: #f3f4f6;
+  color: #6b7280;
+  border: 1px solid #d1d5db;
+}
+
+/* Ensure Solved stays green — add if not already present */
+.tag-solved {
+  background: #d1fae5;
+  color: #065f46;
+  border: 1px solid #6ee7b7;
+}
+
+
+/* ── 3-Button Status Row ──────────────────────────── */
+
+.status-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+/* Base style for all 3 buttons */
+.btn-status {
+  flex: 1;
+  padding: 7px 10px;
+  border-radius: 8px;
+  border: 1.5px solid transparent;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: transparent;
+  white-space: nowrap;
+}
+
+/* Attempted — Yellow theme */
+.btn-attempted {
+  color: #92400e;
+  border-color: #fcd34d;
+  background: #fffbeb;
+}
+
+.btn-attempted:hover {
+  background: #fef3c7;
+}
+
+.btn-attempted.active {
+  background: #fcd34d;
+  color: #78350f;
+  border-color: #f59e0b;
+}
+
+/* Solved — Green theme */
+.btn-solve {
+  color: #065f46;
+  border-color: #6ee7b7;
+  background: #f0fdf4;
+}
+
+.btn-solve:hover {
+  background: #d1fae5;
+}
+
+.btn-solve.active {
+  background: #34d399;
+  color: #022c22;
+  border-color: #10b981;
+}
+
+/* Revision — Red theme */
+.btn-revision {
+  color: #991b1b;
+  border-color: #fca5a5;
+  background: #fff5f5;
+}
+
+.btn-revision:hover {
+  background: #fee2e2;
+}
+
+.btn-revision.active {
+  background: #f87171;
+  color: #450a0a;
+  border-color: #ef4444;
+}
+
+
+/* ── Stats: new color classes ─────────────────────── */
+
+.attempted {
+  color: #d97706;
+}
+
+.revision {
+  color: #dc2626;
+}
+
+
+/* ── Actions layout fix for 3-button row ─────────── */
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 14px;
+}
+.problem-title-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.problem-title-link h2:hover {
+  color: #4f46e5;
+  text-decoration: underline;
+}

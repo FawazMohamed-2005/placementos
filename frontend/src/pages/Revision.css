@@ -1,0 +1,49 @@
+.revision-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.revision-card {
+  background: var(--card, #fff);
+  border: 1px solid #fee2e2;
+  border-left: 4px solid #ef4444;
+  border-radius: 12px;
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.revision-left h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.revision-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.empty-revision {
+  text-align: center;
+  padding: 60px 20px;
+  color: #6b7280;
+}
+
+.empty-revision p:first-child {
+  font-size: 1.4rem;
+  margin-bottom: 8px;
+}
+
+.loading-text {
+  text-align: center;
+  color: #9ca3af;
+  margin-top: 40px;
+}

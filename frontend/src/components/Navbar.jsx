@@ -1,4 +1,5 @@
 import { useNavigate, useLocation } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import "./Navbar.css";
 
 const Navbar = () => {
@@ -48,6 +49,7 @@ const Navbar = () => {
         >
           Logout
         </button>
+        <NavLink to="/revision">Revision</NavLink>
       </div>
     </nav>
   );

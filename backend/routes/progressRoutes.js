@@ -97,4 +97,32 @@ router.get("/stats", authMiddleware, async (req, res) => {
 
     }
 });
+
+router.get("/revision", authMiddleware, async (req, res) => {
+  try {
+    const revisionItems = await UserProgress.find({
+      user: req.user.id,
+      status: "Revision Needed"
+    }).populate("problem");
+
+    res.status(200).json(revisionItems);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Server Error" });
+  }
+});
+router.get("/:id", async (req, res) => {
+  try {
+    const problem = await Problem.findById(req.params.id);
+
+    if (!problem) {
+      return res.status(404).json({ message: "Problem not found" });
+    }
+
+    res.status(200).json(problem);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Server Error" });
+  }
+});
 module.exports = router;

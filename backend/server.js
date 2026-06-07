@@ -15,6 +15,8 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
+const noteRoutes = require("./routes/noteRoutes");
+app.use("/api/notes", noteRoutes);
 app.use("/api/problems", problemRoutes);
 app.use("/api/progress", progressRoutes);
 app.get("/", (req, res) => {

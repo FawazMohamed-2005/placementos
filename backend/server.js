@@ -6,17 +6,22 @@ const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const problemRoutes = require("./routes/problemRoutes");
 dotenv.config();
+const resumeRoutes = require("./routes/resumeRoutes");
 const progressRoutes = require("./routes/progressRoutes");
 connectDB();
 const applicationRoutes = require("./routes/applicationRoutes");
 const app = express();
+app.use("/uploads", express.static("uploads"));
+const noteRoutes = require("./routes/noteRoutes");
+const interviewRoutes = require("./routes/interviewRoutes");
 
 app.use(cors());
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
-const noteRoutes = require("./routes/noteRoutes");
+app.use("/api/interview", interviewRoutes);
 app.use("/api/notes", noteRoutes);
+app.use("/api/resumes", resumeRoutes);
 app.use("/api/applications", applicationRoutes);
 app.use("/api/problems", problemRoutes);
 app.use("/api/progress", progressRoutes);

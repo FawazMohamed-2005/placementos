@@ -9,7 +9,8 @@ import ResetPassword from "./pages/ResetPassword";
 import ProblemDetail from "./pages/ProblemDetail";
 import Jobs from "./pages/Jobs";
 import JobForm from "./pages/JobForm";
-
+import Resume from "./pages/Resume";
+import Interview from "./pages/Interview";
 function App() {
   return (
     <BrowserRouter>
@@ -26,6 +27,8 @@ function App() {
         <Route path="/jobs" element={<Jobs />} />
         <Route path="/jobs/new" element={<JobForm />} />
         <Route path="/jobs/:id/edit" element={<JobForm />} />
+        <Route path="/resume" element={<Resume />} />
+        <Route path="/interview" element={<Interview />} />
       </Routes>
     </BrowserRouter>
   );

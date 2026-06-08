@@ -42,6 +42,28 @@ const Navbar = () => {
         >
           Jobs
         </button>
+        
+        <button
+            className={`nav-btn ${isActive("/jobs") ? "active" : ""}`}
+            onClick={() => navigate("/jobs")}
+        >
+            Jobs
+        </button>
+
+
+        <button
+            className={`nav-btn ${isActive("/resume") ? "active" : ""}`}
+            onClick={() => navigate("/resume")}
+        >
+            Resume
+        </button>
+        <button
+            className={`nav-btn ${isActive("/interview") ? "active" : ""}`}
+            onClick={() => navigate("/interview")}
+        >
+            Interview
+        </button>   
+
 
         <button
           className={`nav-btn ${isActive("/revision") ? "active" : ""}`}

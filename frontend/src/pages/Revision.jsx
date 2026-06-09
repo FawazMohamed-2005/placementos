@@ -11,17 +11,31 @@ const Revision = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (!token) { navigate("/"); return; }
+
+    if (!token) {
+      navigate("/");
+      return;
+    }
+
     fetchRevision();
   }, []);
 
   const fetchRevision = async () => {
     try {
       const token = localStorage.getItem("token");
+
       const res = await api.get("/progress/revision", {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
-      setRevisionList(res.data);
+
+      // Remove any entries where problem is null
+      const validData = (res.data || []).filter(
+        (item) => item && item.problem
+      );
+
+      setRevisionList(validData);
       setLoading(false);
     } catch (err) {
       console.log(err);
@@ -32,14 +46,20 @@ const Revision = () => {
   const updateStatus = async (problemId, status) => {
     try {
       const token = localStorage.getItem("token");
+
       await api.post(
         "/progress",
         { problemId, status },
-        { headers: { Authorization: `Bearer ${token}` } }
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
-      // Remove from list instantly on status change
+
+      // Remove instantly from revision queue
       setRevisionList((prev) =>
-        prev.filter((p) => p.problem._id !== problemId)
+        prev.filter((p) => p?.problem?._id !== problemId)
       );
     } catch (err) {
       console.log(err);
@@ -55,8 +75,8 @@ const Revision = () => {
   return (
     <div className="page">
       <Navbar />
-      <div className="container">
 
+      <div className="container">
         <div className="hero">
           <h1>Revision Queue</h1>
           <p>
@@ -69,34 +89,49 @@ const Revision = () => {
 
         {!loading && revisionList.length === 0 && (
           <div className="empty-revision">
-            <p> No problems in revision queue!</p>
+            <p>No problems in revision queue!</p>
             <p>You are fully prepared.</p>
           </div>
         )}
 
         <div className="revision-list">
           {revisionList.map((item) => {
+            if (!item?.problem) return null;
+
             const problem = item.problem;
+
             return (
               <div key={problem._id} className="revision-card">
                 <div className="revision-left">
                   <h3>{problem.title}</h3>
+
                   <div className="tags">
-                    <span className={getDifficultyClass(problem.difficulty)}>
+                    <span
+                      className={getDifficultyClass(problem.difficulty)}
+                    >
                       {problem.difficulty}
                     </span>
-                    <span className="tag tag-topic">{problem.topic}</span>
-                    <span className="tag tag-revision">Revision Needed</span>
+
+                    <span className="tag tag-topic">
+                      {problem.topic}
+                    </span>
+
+                    <span className="tag tag-revision">
+                      Revision Needed
+                    </span>
                   </div>
                 </div>
 
                 <div className="revision-actions">
                   <button
                     className="btn-status btn-solve"
-                    onClick={() => updateStatus(problem._id, "Solved")}
+                    onClick={() =>
+                      updateStatus(problem._id, "Solved")
+                    }
                   >
                     ✓ Mark Solved
                   </button>
+
                   <a
                     href={problem.link}
                     target="_blank"
@@ -110,7 +145,6 @@ const Revision = () => {
             );
           })}
         </div>
-
       </div>
     </div>
   );

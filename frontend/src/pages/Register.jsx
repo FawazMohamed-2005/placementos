@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
+import "./Auth.css";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -11,66 +12,110 @@ const Register = () => {
     password: "",
   });
 
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
   const handleChange = (e) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-    });
+    setForm({ ...form, [e.target.name]: e.target.value });
+    setError("");
   };
 
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    try {
-      await api.post("/auth/register", form);
+    if (!form.name.trim() || !form.email.trim() || !form.password.trim()) {
+      setError("All fields are required.");
+      return;
+    }
 
-      alert("Registration successful. Please login.");
+    try {
+      setLoading(true);
+      await api.post("/auth/register", form);
+      setLoading(false);
       navigate("/");
     } catch (err) {
       console.log("Register error:", err);
-      alert("Registration failed");
+      setError("Registration failed. Email may already be in use.");
+      setLoading(false);
     }
   };
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h2>Register</h2>
+    <div className="auth-page">
+      <div className="auth-card">
 
-      <form onSubmit={handleRegister}>
-        <input
-          name="name"
-          placeholder="Name"
-          onChange={handleChange}
-        />
-        <br />
+        <div className="auth-logo">PlacementOS</div>
+        <h1 className="auth-title">Create your account</h1>
+        <p className="auth-subtitle">
+          Start your placement preparation today
+        </p>
 
-        <input
-          name="email"
-          placeholder="Email"
-          onChange={handleChange}
-        />
-        <br />
+        {error && (
+          <div className="auth-error">{error}</div>
+        )}
 
-        <input
-          name="password"
-          type="password"
-          placeholder="Password"
-          onChange={handleChange}
-        />
-        <br />
+        <form onSubmit={handleRegister} className="auth-form">
 
-        <button type="submit">Register</button>
-      </form>
+          <div className="auth-field">
+            <label htmlFor="name">Full Name</label>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              placeholder="Enter your full name"
+              value={form.name}
+              onChange={handleChange}
+              autoComplete="name"
+            />
+          </div>
 
-      <p>
-        Already have an account?{" "}
-        <span
-          style={{ color: "blue", cursor: "pointer" }}
-          onClick={() => navigate("/")}
-        >
-          Login
-        </span>
-      </p>
+          <div className="auth-field">
+            <label htmlFor="email">Email Address</label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              placeholder="Enter your email"
+              value={form.email}
+              onChange={handleChange}
+              autoComplete="email"
+            />
+          </div>
+
+          <div className="auth-field">
+            <label htmlFor="password">Password</label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              placeholder="Create a password"
+              value={form.password}
+              onChange={handleChange}
+              autoComplete="new-password"
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="auth-btn"
+            disabled={loading}
+          >
+            {loading ? "Creating Account..." : "Create Account"}
+          </button>
+
+        </form>
+
+        <p className="auth-switch">
+          Already have an account?{" "}
+          <span
+            className="auth-link"
+            onClick={() => navigate("/")}
+          >
+            Login
+          </span>
+        </p>
+
+      </div>
     </div>
   );
 };

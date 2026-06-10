@@ -107,7 +107,7 @@ const Problems = () => {
       <Navbar />
 
       <div className="container">
-        {/* Hero */}
+ 
         <div className="hero">
           <h1>DSA Tracker</h1>
           <p>Track every problem. Know exactly where you stand.</p>
@@ -145,7 +145,6 @@ const Problems = () => {
           </select>
         </div>
 
-        {/* Stats — now shows 5 cards */}
         <div className="stats">
           <div className="stat-card">
             <p>Total</p>

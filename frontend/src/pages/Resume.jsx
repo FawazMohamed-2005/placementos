@@ -6,7 +6,10 @@ import "./Resume.css";
 
 const Resume = () => {
     const navigate = useNavigate();
-
+    const [reviewingId, setReviewingId] = useState(null);
+    const [reviewText, setReviewText] = useState("");
+    const [reviewLoading, setReviewLoading] = useState(false);
+    const [activeReviewId, setActiveReviewId] = useState(null);
     const [resumes, setResumes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [uploading, setUploading] = useState(false);
@@ -114,7 +117,43 @@ const Resume = () => {
     const getFileUrl = (filename) => {
         return `http://localhost:5000/uploads/${filename}`;
     };
+    const getAiReview = async (resume) => {
+    try {
+        setReviewingId(resume._id);
+        setActiveReviewId(resume._id);
+        setReviewText("");
+        setReviewLoading(true);
+        const token = localStorage.getItem("token");
+        const res = await api.post(
+            "/ai/resume-review",
+            {
+                resumeTitle: resume.title,
+                resumeText: `Resume Title: ${resume.title}
+        Tags: ${resume.tags?.join(", ") || "None"}
+        Uploaded: ${new Date(resume.createdAt).toLocaleDateString()}
 
+        Please provide general resume improvement advice
+        for a student targeting software engineering
+        placements at product companies, based on
+        the resume titled "${resume.title}" with
+        tags: ${resume.tags?.join(", ") || "None"}.`
+                    },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    }
+                );
+                setReviewText(res.data.response);
+                setReviewLoading(false);
+            } catch (err) {
+                console.log(err);
+                setReviewText(
+                    "AI review unavailable. Please try again."
+                );
+                setReviewLoading(false);
+            }
+    };
     return (
         <div className="page">
             <Navbar />
@@ -222,62 +261,107 @@ const Resume = () => {
                 )}
 
                 <div className="resume-list">
-                    {resumes.map((resume) => (
-                        <div key={resume._id} className="resume-card">
-                            <div className="resume-icon">📄</div>
-
-                            <div className="resume-info">
-                                <h3>{resume.title}</h3>
-                                <p className="resume-original">
-                                    {resume.originalName}
-                                </p>
-
-                                <div className="resume-meta-row">
-                                    <span className="meta-pill">
-                                        {formatSize(resume.fileSize)}
-                                    </span>
-                                    <span className="meta-pill">
-                                        {formatDate(resume.createdAt)}
-                                    </span>
-                                </div>
-
-                                {resume.tags?.length > 0 && (
-                                    <div className="resume-tags">
-                                        {resume.tags.map((tag) => (
-                                            <span key={tag} className="resume-tag">
-                                                {tag}
-                                            </span>
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
-
-                            <div className="resume-actions">
-                                <a
-                                    href={getFileUrl(resume.filename)}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    className="btn-view-resume"
-                                >
-                                    View PDF
-                                </a>
-                                <a
-                                    href={getFileUrl(resume.filename)}
-                                    download={resume.originalName}
-                                    className="btn-edit"
-                                >
-                                    Download
-                                </a>
-                                <button
-                                    className="btn-delete"
-                                    onClick={() => deleteResume(resume._id)}
-                                >
-                                    Delete
-                                </button>
-                            </div>
-                        </div>
-                    ))}
+    {resumes.map((resume) => (
+        <div key={resume._id}>
+            <div className="resume-card">
+                <div className="resume-icon">
+                    PDF
                 </div>
+
+                <div className="resume-info">
+                    <h3>{resume.title}</h3>
+                    <p className="resume-original">
+                        {resume.originalName}
+                    </p>
+                    <div className="resume-meta-row">
+                        <span className="meta-pill">
+                            {formatSize(resume.fileSize)}
+                        </span>
+                        <span className="meta-pill">
+                            {formatDate(resume.createdAt)}
+                        </span>
+                    </div>
+                    {resume.tags?.length > 0 && (
+                        <div className="resume-tags">
+                            {resume.tags.map((tag) => (
+                                <span
+                                    key={tag}
+                                    className="resume-tag"
+                                >
+                                    {tag}
+                                </span>
+                            ))}
+                        </div>
+                    )}
+                </div>
+
+                <div className="resume-actions">
+                    <a
+                        href={getFileUrl(resume.filename)}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="btn-view-resume"
+                    >
+                        View PDF
+                    </a>
+                    <a
+                        href={getFileUrl(resume.filename)}
+                        download={resume.originalName}
+                        className="btn-edit"
+                    >
+                        Download
+                    </a>
+                    <button
+                        className="btn-ai-review"
+                        onClick={() => {
+                            if (activeReviewId === resume._id) {
+                                setActiveReviewId(null);
+                                setReviewText("");
+                            } else {
+                                getAiReview(resume);
+                            }
+                        }}
+                        disabled={
+                            reviewLoading &&
+                            reviewingId === resume._id
+                        }
+                    >
+                        {reviewLoading &&
+                        reviewingId === resume._id
+                            ? "Reviewing..."
+                            : activeReviewId === resume._id
+                            ? "Hide Review"
+                            : "AI Review"}
+                    </button>
+                    <button
+                        className="btn-delete"
+                        onClick={() =>
+                            deleteResume(resume._id)
+                        }
+                    >
+                        Delete
+                    </button>
+                </div>
+            </div>
+
+            {activeReviewId === resume._id &&
+                reviewText && (
+                <div className="ai-review-panel">
+                    <p className="ai-review-label">
+                        AI Resume Review — {resume.title}
+                    </p>
+                    <div className="ai-review-text">
+                        {reviewText
+                            .split("\n")
+                            .map((line, i) => (
+                                <p key={i}>{line}</p>
+                            ))}
+                    </div>
+                </div>
+            )}
+        </div>
+    ))}
+</div>
 
             </div>
         </div>

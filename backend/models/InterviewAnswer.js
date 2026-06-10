@@ -8,8 +8,7 @@ const interviewAnswerSchema = new mongoose.Schema(
             required: true
         },
 
-        // Category groups the question
-        // Introduction / Strengths / Behavioral / Company
+ 
         category: {
             type: String,
             enum: [
@@ -23,21 +22,20 @@ const interviewAnswerSchema = new mongoose.Schema(
             required: true
         },
 
-        // The question itself
         question: {
             type: String,
             required: true,
             trim: true
         },
 
-        // Student's prepared answer
+
         answer: {
             type: String,
             required: true,
             trim: true
         },
 
-        // Optional notes like "use STAR format"
+   
         notes: {
             type: String,
             default: "",

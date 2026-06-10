@@ -7,7 +7,9 @@ import "./ProblemDetail.css";
 const ProblemDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-
+  const [aiDoubt, setAiDoubt] = useState("");
+  const [aiResponse, setAiResponse] = useState("");
+  const [aiLoading, setAiLoading] = useState(false);
   const [problem, setProblem] = useState(null);
   const [status, setStatus] = useState("Not Started");
   const [loading, setLoading] = useState(true);
@@ -125,7 +127,36 @@ const ProblemDetail = () => {
       </div>
     </div>
   );
-
+  const askAiMentor = async () => {
+    if (!aiDoubt.trim()) return;
+    try {
+        setAiLoading(true);
+        setAiResponse("");
+        const token = localStorage.getItem("token");
+        const res = await api.post(
+            "/ai/dsa-mentor",
+            {
+                problemTitle: problem.title,
+                topic: problem.topic,
+                difficulty: problem.difficulty,
+                doubt: aiDoubt
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+        setAiResponse(res.data.response);
+        setAiLoading(false);
+    } catch (err) {
+        console.log(err);
+        setAiResponse(
+            "AI service unavailable. Please try again."
+        );
+        setAiLoading(false);
+    }
+};
   return (
     <div className="page">
       <Navbar />
@@ -139,7 +170,56 @@ const ProblemDetail = () => {
         </button>
 
         <div className="detail-card">
+          {/* AI DSA Mentor */}
+          <div className="ai-section">
+              <div className="ai-section-header">
+                  <p className="meta-label">AI DSA Mentor</p>
+                  <span className="ai-badge">
+                      Powered by GROQ AI
+                  </span>
+              </div>
 
+              <p className="ai-description">
+                  Stuck on this problem? Ask the AI mentor
+                  for hints. It will not give you the
+                  full solution.
+              </p>
+
+              <div className="ai-input-row">
+                  <input
+                      id="aiDoubt"
+                      name="aiDoubt"
+                      type="text"
+                      placeholder="e.g. What approach should I use?"
+                      value={aiDoubt}
+                      onChange={(e) => setAiDoubt(e.target.value)}
+                      className="ai-input"
+                      onKeyDown={(e) => {
+                          if (e.key === "Enter") askAiMentor();
+                      }}
+                  />
+                  <button
+                      className="btn-ask-ai"
+                      onClick={askAiMentor}
+                      disabled={aiLoading || !aiDoubt.trim()}
+                  >
+                      {aiLoading ? "Thinking..." : "Ask AI"}
+                  </button>
+              </div>
+
+              {aiResponse && (
+                  <div className="ai-response">
+                      <p className="ai-response-label">
+                          AI Mentor Response
+                      </p>
+                      <div className="ai-response-text">
+                          {aiResponse.split("\n").map((line, i) => (
+                              <p key={i}>{line}</p>
+                          ))}
+                      </div>
+                  </div>
+              )}
+          </div>
           {/* Header */}
           <div className="detail-header">
             <h1>{problem.title}</h1>

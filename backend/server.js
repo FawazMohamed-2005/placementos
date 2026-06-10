@@ -14,7 +14,7 @@ const app = express();
 app.use("/uploads", express.static("uploads"));
 const noteRoutes = require("./routes/noteRoutes");
 const interviewRoutes = require("./routes/interviewRoutes");
-
+const aiRoutes = require("./routes/aiRoutes");
 app.use(cors());
 app.use(express.json());
 
@@ -23,6 +23,7 @@ app.use("/api/interview", interviewRoutes);
 app.use("/api/notes", noteRoutes);
 app.use("/api/resumes", resumeRoutes);
 app.use("/api/applications", applicationRoutes);
+app.use("/api/ai", aiRoutes);
 app.use("/api/problems", problemRoutes);
 app.use("/api/progress", progressRoutes);
 app.get("/", (req, res) => {

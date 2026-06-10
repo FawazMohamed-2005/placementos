@@ -42,6 +42,7 @@ const SUGGESTED_QUESTIONS = {
     "Other": []
 };
 
+
 const emptyForm = {
     category: "Introduction",
     question: "",
@@ -51,7 +52,10 @@ const emptyForm = {
 
 const Interview = () => {
     const navigate = useNavigate();
-
+    const [coachQuestion, setCoachQuestion] = useState(null);
+    const [coachAnswer, setCoachAnswer] = useState("");
+    const [coachResponse, setCoachResponse] = useState("");
+    const [coachLoading, setCoachLoading] = useState(false);
     const [answers, setAnswers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [showForm, setShowForm] = useState(false);
@@ -171,7 +175,35 @@ const Interview = () => {
         if (items.length > 0) acc[cat] = items;
         return acc;
     }, {});
-
+    const askInterviewCoach = async (item) => {
+    if (!coachAnswer.trim()) return;
+    try {
+        setCoachLoading(true);
+        setCoachResponse("");
+        const token = localStorage.getItem("token");
+        const res = await api.post(
+            "/ai/interview-coach",
+            {
+                question: item.question,
+                answer: coachAnswer,
+                category: item.category
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+        setCoachResponse(res.data.response);
+        setCoachLoading(false);
+    } catch (err) {
+        console.log(err);
+        setCoachResponse(
+            "AI service unavailable. Please try again."
+        );
+        setCoachLoading(false);
+    }
+    };
     return (
         <div className="page">
             <Navbar />
@@ -430,7 +462,80 @@ const Interview = () => {
                                                     Delete
                                                 </button>
                                             </div>
+                                            <div className="ai-coach-section">
+                                                <p className="answer-label">
+                                                    Practice with AI Coach
+                                                </p>
 
+                                                {coachQuestion?._id !== item._id ? (
+                                                    <button
+                                                        className="btn-ai-coach"
+                                                        onClick={() => {
+                                                            setCoachQuestion(item);
+                                                            setCoachAnswer("");
+                                                            setCoachResponse("");
+                                                        }}
+                                                    >
+                                                        Practice Answer with AI
+                                                    </button>
+                                                ) : (
+                                                    <div className="coach-practice-area">
+                                                        <textarea
+                                                            id={`coach-${item._id}`}
+                                                            name={`coach-${item._id}`}
+                                                            placeholder="Type your answer here and get AI feedback..."
+                                                            value={coachAnswer}
+                                                            onChange={(e) =>
+                                                                setCoachAnswer(e.target.value)
+                                                            }
+                                                            rows={4}
+                                                            className="coach-textarea"
+                                                        />
+
+                                                        <div className="coach-actions">
+                                                            <button
+                                                                className="btn-cancel"
+                                                                onClick={() => {
+                                                                    setCoachQuestion(null);
+                                                                    setCoachAnswer("");
+                                                                    setCoachResponse("");
+                                                                }}
+                                                            >
+                                                                Cancel
+                                                            </button>
+                                                            <button
+                                                                className="btn-ask-ai"
+                                                                onClick={() =>
+                                                                    askInterviewCoach(item)
+                                                                }
+                                                                disabled={
+                                                                    coachLoading ||
+                                                                    !coachAnswer.trim()
+                                                                }
+                                                            >
+                                                                {coachLoading
+                                                                    ? "Evaluating..."
+                                                                    : "Get AI Feedback"}
+                                                            </button>
+                                                        </div>
+
+                                                        {coachResponse && (
+                                                            <div className="ai-response">
+                                                                <p className="ai-response-label">
+                                                                    AI Coach Feedback
+                                                                </p>
+                                                                <div className="ai-response-text">
+                                                                    {coachResponse
+                                                                        .split("\n")
+                                                                        .map((line, i) => (
+                                                                            <p key={i}>{line}</p>
+                                                                        ))}
+                                                                </div>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                )}
+                                            </div>
                                         </div>
                                     )}
                                 </div>

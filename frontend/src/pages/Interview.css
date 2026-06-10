@@ -193,3 +193,82 @@
     color: #4f46e5;
     border-color: #c4b5fd;
 }
+.ai-coach-section {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #f3f4f6;
+}
+
+.btn-ai-coach {
+    background: #ede9fe;
+    color: #5b21b6;
+    border: 1px solid #ddd6fe;
+    border-radius: 8px;
+    padding: 8px 18px;
+    font-size: 0.83rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-ai-coach:hover {
+    background: #ddd6fe;
+}
+
+.coach-practice-area {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.coach-textarea {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 0.88rem;
+    font-family: inherit;
+    background: #f9fafb;
+    color: #111827;
+    resize: vertical;
+    transition: border-color 0.2s;
+}
+
+.coach-textarea:focus {
+    outline: none;
+    border-color: #4f46e5;
+    background: #fff;
+}
+
+.coach-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.ai-response {
+    background: #f5f3ff;
+    border: 1px solid #ddd6fe;
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-top: 4px;
+}
+
+.ai-response-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #5b21b6;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 10px;
+}
+
+.ai-response-text p {
+    font-size: 0.88rem;
+    color: #374151;
+    line-height: 1.7;
+    margin-bottom: 4px;
+}
+
+.ai-response-text p:empty {
+    display: none;
+}
